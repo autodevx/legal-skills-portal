@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
-const SKILLS_PATH = path.join(process.cwd(), '../legal-skills/legal-skills-repo/skills')
+const SKILLS_PATH = path.join(process.cwd(), 'skills')
 
 export interface Skill {
   slug: string
