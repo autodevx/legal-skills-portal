@@ -46,6 +46,7 @@ export default function SubmitPage() {
     email: '',
   })
   const [status, setStatus] = useState<Status>('idle')
+  const [issueUrl, setIssueUrl] = useState<string | null>(null)
 
   const set = (field: string, value: string) =>
     setForm(f => ({ ...f, [field]: value }))
@@ -54,20 +55,18 @@ export default function SubmitPage() {
     e.preventDefault()
     setStatus('sending')
     try {
-      const res = await fetch('https://formspree.io/f/mnjgbjvd', {
+      const res = await fetch('/api/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          'Nome da skill': form.name,
-          'Persona': form.persona,
-          'Domínio': form.domain,
-          'Descrição': form.description,
-          'Exemplo de uso': form.example,
-          'Email': form.email,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       })
-      if (res.ok) setStatus('success')
-      else setStatus('error')
+      if (res.ok) {
+        const data = await res.json()
+        setIssueUrl(data.url ?? null)
+        setStatus('success')
+      } else {
+        setStatus('error')
+      }
     } catch {
       setStatus('error')
     }
@@ -83,12 +82,25 @@ export default function SubmitPage() {
           </svg>
         </div>
         <h1 className="text-2xl font-bold mb-3" style={{ color: T.fg }}>Sugestão enviada!</h1>
-        <p className="text-sm leading-relaxed mb-8" style={{ color: T.fgLight }}>
-          Obrigado pela contribuição. Vamos revisar sua ideia e entrar em contato se precisarmos de mais detalhes.
+        <p className="text-sm leading-relaxed mb-6" style={{ color: T.fgLight }}>
+          Obrigado pela contribuição. Criamos um issue no GitHub com o rascunho da sua skill.
+          Vamos revisar e publicar em breve.
         </p>
-        <a href="/" className="text-sm font-medium hover:underline" style={{ color: T.brand }}>
-          ← Voltar para as skills
-        </a>
+        {issueUrl && (
+          <a href={issueUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium mb-8 transition-colors hover:opacity-90"
+            style={{ background: T.surface, border: `1px solid ${T.border}`, color: T.fgLight }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Ver issue no GitHub
+          </a>
+        )}
+        <div>
+          <a href="/" className="text-sm font-medium hover:underline" style={{ color: T.brand }}>
+            ← Voltar para as skills
+          </a>
+        </div>
       </main>
     )
   }

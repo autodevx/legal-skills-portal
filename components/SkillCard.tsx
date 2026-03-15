@@ -62,7 +62,9 @@ export default function SkillCard({ skill }: { skill: Skill }) {
             </span>
             <span className="text-xs font-mono" style={{ color: T.fgMuted }}>v{skill.version}</span>
           </div>
-          <h3 className="font-mono font-medium text-sm" style={{ color: T.fg }}>{skill.name}</h3>
+          <a href={`/skills/${skill.slug}`} className="hover:underline">
+            <h3 className="font-mono font-medium text-sm" style={{ color: T.fg }}>{skill.name}</h3>
+          </a>
         </div>
         <a href={`https://github.com/autodevx/legal-skills/tree/main/skills/${skill.slug}`}
           target="_blank" rel="noopener noreferrer"
