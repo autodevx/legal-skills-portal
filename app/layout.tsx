@@ -1,9 +1,38 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'https://legalskills.sh')
+
+const description =
+  'Skills de IA prontas para usar no Claude, ChatGPT e outros. Feitas para advogados, controllers e equipes de Legal Ops no Brasil.'
+
 export const metadata: Metadata = {
-  title: 'legalskills.sh — IA para jurídico brasileiro',
-  description: 'Skills de IA prontas para usar no Claude, ChatGPT e outros. Feitas para advogados, controllers e equipes de Legal Ops no Brasil.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'legalskills.sh — IA para o jurídico brasileiro',
+    template: '%s — legalskills.sh',
+  },
+  description,
+  keywords: ['IA jurídica', 'legal ops', 'skills', 'Claude', 'ChatGPT', 'advocacia', 'open source', 'direito brasileiro'],
+  applicationName: 'legalskills.sh',
+  authors: [{ name: 'Autodev Tecnologia', url: 'https://www.autodev.com.br' }],
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: siteUrl,
+    siteName: 'legalskills.sh',
+    title: 'legalskills.sh — IA para o jurídico brasileiro',
+    description,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'legalskills.sh — IA para o jurídico brasileiro',
+    description,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
