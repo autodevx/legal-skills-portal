@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# skills sincronizadas do repo OSS no build (fonte única: autodevx/legal-skills)
+/skills

@@ -172,10 +172,9 @@ ${example ? `### Exemplo de uso\n${example}` : ''}
 
   return NextResponse.json({ prUrl: pr.html_url }, { status: 201 })
   } catch (err) {
-    // ponytail: detalhe exposto temporariamente pra diagnóstico — remover depois
     console.error('[submit] falhou:', err)
     return NextResponse.json(
-      { error: 'Falha ao processar', detail: err instanceof Error ? err.message : String(err) },
+      { error: 'Falha ao processar a solicitação. Tente novamente.' },
       { status: 502 }
     )
   }
